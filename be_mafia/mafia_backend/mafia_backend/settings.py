@@ -28,9 +28,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='').split(',')
 
 
 # Application definition
@@ -43,12 +43,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    'rest_framework'
+    'corsheaders'
+
     "users",
     "games",
     "posts",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware'
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -84,7 +88,7 @@ WSGI_APPLICATION = "mafia_backend.wsgi.application"
 DATABASES = {
     'default': {
      'ENGINE': 'django.db.backends.postgresql',
-     'NAME': os.getenv('POSTGRESQL_DB'),
+     'NAME': os.getenv('POSTGRES_DB'),
      'USER': os.getenv('POSTGRES_USER'),
      'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
      'HOST': os.getenv('POSTGRES_HOST', 'db'),
@@ -112,13 +116,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.User"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
@@ -133,3 +139,54 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# НАСТРОЙКИ DRF 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+      'rest_framework.permissions.AllowAny', # разрешить доступ всем
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+      'rest_framework.throttling.AnonrateThrottle', # ограничение запросов для анонимов
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+      'anon': '100/hour', # лимит запросов для анонимов 
+    },
+    'DEFAULT_RENDERER_CLASSES': [
+      'rest_framework.renderers.JSONRenderer', # рендеринг в json
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+      'rest_framework.parsers.JSONParser', # парсинг JSON данных
+    ],
+}
+
+#  настрйока cors для разработки и продакшена
+if DEBUG:
+  CORS_ALLOW_ALL_ORIGINS = True
+else:
+  CORS_ALLOWED_ORIGINS = [ # разрешенные источники
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+  ]
+
+SECURE_BROWSER_XSS_FILTER = True # защита от Xss атак
+SECURE_CONTENT_TYPE_NOSNIFF = True # запрет mime-типов (exe и тд)
+X_FRAME_OPTIONBS = 'DENY' # защита от кликджекинга
+
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'handlers': {
+    'file': {
+      'level': 'INFO', # уровень логирования
+      'class': 'logging.FileHandler', # логирование в файл
+      'filename': BASE_DIR / 'debug.log', # путь к файлу логов
+    },
+  },
+  'loggers': {
+    'django': {
+      'handlers': ['file'], # используемый обработчик
+      'level': "INFO", # 
+      'propagate': True, # передача логов родительским логгерам 
+    },
+  },
+}
