@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='').split(',')
 
@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    'rest_framework'
-    'corsheaders'
+    'rest_framework',
+    'corsheaders',
 
     "users",
     "games",
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
       'rest_framework.permissions.AllowAny', # разрешить доступ всем
     ],
     'DEFAULT_THROTTLE_CLASSES': [
-      'rest_framework.throttling.AnonrateThrottle', # ограничение запросов для анонимов
+      'rest_framework.throttling.AnonRateThrottle', # ограничение запросов для анонимов
     ],
     'DEFAULT_THROTTLE_RATES': {
       'anon': '100/hour', # лимит запросов для анонимов 

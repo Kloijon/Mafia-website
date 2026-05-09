@@ -1,11 +1,11 @@
 from rest_framework import generics, status
-from rest_framework.permissions import BasePermissions, SAFE_METHODS
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .models import Post
 from .serializers import PostSerializer
 
-class IsAdminOrReadOnly(BasePermissions):
+class IsAdminOrReadOnly(BasePermission):
   def has_permission(self, request, view):
     if request.method in SAFE_METHODS:
       return True
