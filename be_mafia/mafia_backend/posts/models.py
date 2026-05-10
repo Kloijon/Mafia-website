@@ -10,7 +10,7 @@ class Post(models.Model):
   title = models.CharField(max_length=200)
   slug = models.SlugField(unique=True)
   content = models.TextField(null=True, blank=True)
-  image = models.ImageField(upload_to='posts_images/', null=True, blank=True)
+  image = models.ImageField(upload_to='media/posts_images/', null=True, blank=True)
   tournament = models.ForeignKey(
         "games.Tournament",
         on_delete=models.SET_NULL,

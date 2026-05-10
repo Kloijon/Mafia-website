@@ -1,6 +1,53 @@
 from rest_framework import serializers
-from .models import Game, UserPlay, Role
+from .models import Game, UserPlay, Role, Tournament
 from users.models import User
+from .services import update_elo
+from PIL import Image
+
+class TournamentSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Tournament
+    fields = [
+      'id',
+      'title',
+      'description',
+      'image',
+      'start_time',
+      'place'
+    ]
+    read_only_fields = ['id']
+  
+  def validate_title(self, value):
+    if not value.strip():
+      raise serializers.ValidationError('Заголовок не может быть пустым') 
+    return value.strip()
+  
+  def validate_description(self, value):
+
+    if value is None:
+        return value
+
+    if not value.strip():
+        raise serializers.ValidationError('Описание не может быть пустым')
+
+    return value.strip()
+   
+  def validate_image(self, value):
+    if value:
+      if value.size > 5 * 1024 * 1024:
+        raise serializers.ValidationError('Максимальный размер файла - 5 МБ')
+      try:
+        img = Image.open(value)
+        img.verify()
+        value.seek(0)
+      except Exception:
+        raise serializers.ValidationError('Некорректное изображение')
+    return value
+  
+  def validate_place(self, value):
+    if not value.strip():
+      raise serializers.ValidationError('Место проведения обязательно должно быть указано') 
+    return value.strip()
 
 class UserPlaySerializer(serializers.ModelSerializer):
   user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
@@ -101,5 +148,7 @@ class GameCreateSerializer(serializers.ModelSerializer):
 
     for player_data in players_data:
       UserPlay.objects.create(game=game, **player_data)
+
+    update_elo(game)
 
     return game

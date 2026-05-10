@@ -8,13 +8,13 @@ class UserSerializer(serializers.ModelSerializer):
     fields = [
       'id',
       'username',
-      'slug',
       'avatar',
       'email',
       'tg_username',
       'elo',
+      'is_staff',
     ]
-    read_only_fields = ['id', 'elo']
+    read_only_fields = ['id', 'elo', 'is_staff']
   
   def validate_username(self, value):
     if len(value) <= 2:

@@ -6,7 +6,7 @@ from users.models import User
 class Tournament(models.Model):
  title = models.CharField(max_length=100, unique=True)
  description = models.TextField(null=True, blank=True)
- image = models.ImageField(upload_to='tournaments_image/', null=True, blank=True)
+ image = models.ImageField(upload_to='media/tournament_images/', null=True, blank=True)
  start_time = models.DateTimeField()
  place = models.CharField(max_length=150)
  
@@ -24,7 +24,7 @@ class Game(models.Model):
  result = models.CharField(max_length=20, choices=RESULT_CHOICES, default="Red")
 
  def __str__(self):
-  return self.id
+  return str(self.id)
 
 
 class Role(models.TextChoices):
@@ -49,7 +49,7 @@ class UserPlay(models.Model):
  ]
  
  user = models.ForeignKey('users.User', on_delete=models.CASCADE)
- game = models.ForeignKey("games.Game", on_delete=models.CASCADE)
+ game = models.ForeignKey("games.Game", on_delete=models.CASCADE, related_name='players')
  foul = models.IntegerField(default=0, choices=FOUL_CHOICE)
  tech_foul = models.IntegerField(default=0, choices=TECH_FOUL_CHOICE)
  play_role = models.CharField(max_length=20, choices=Role.choices)
