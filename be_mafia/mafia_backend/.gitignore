@@ -8,5 +8,4 @@ staticfiles/
 .idea/
 django.log
 security.log
-.log
-debug.log
+*.log

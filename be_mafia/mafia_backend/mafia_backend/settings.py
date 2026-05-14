@@ -87,12 +87,12 @@ WSGI_APPLICATION = "mafia_backend.wsgi.application"
 
 DATABASES = {
     'default': {
-     'ENGINE': 'django.db.backends.postgresql',
-     'NAME': os.getenv('POSTGRES_DB'),
-     'USER': os.getenv('POSTGRES_USER'),
-     'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-     'HOST': os.getenv('POSTGRES_HOST', 'db'),
-     'PORT': os.getenv('POSTGRES_PORT', '5432'),
+     'ENGINE': 'django.db.backends.mysql',
+     'NAME': os.getenv('MySQL_DB'),
+     'USER': os.getenv('MySQL_USER'),
+     'PASSWORD': os.getenv('MySQL_PASSWORD'),
+     'HOST': os.getenv('MySQL_HOST', 'db'),
+     'PORT': os.getenv('MySQL_PORT', '3306'),
      'ATOMIC_REQUESTS': True,
     }
 }
