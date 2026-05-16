@@ -1,13 +1,10 @@
 <template>
-	<div>
-		Триада 
-	</div>
+	<TopMenu/>
+	<router-view />
 </template>
 
 <script setup lang="ts">
-
+import TopMenu from './core/components/menu/TopMenu.vue';
 </script>
 
-<style scoped>
-
-</style>
+<style></style>

@@ -1,3 +1,21 @@
 * {
-  font-family: 'Playfair Display', serif;
+  font-family: "Philosopher", sans-serif;
+}
+body {
+  background: #2c2c2c;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
+#app {
+  height: 100vh;
+  overflow: hidden;
 }
