@@ -1,62 +1,56 @@
-import { defineStore } from 'pinia';
-import { post, get } from '@/helper/api';
-import { API_URLS } from '@/helper/apiUrls';
+import { defineStore } from "pinia";
+import { post, get } from "@/helper/api";
+import { API_URLS } from "@/helper/apiUrls";
 
+// Интерфейс пользоваетеля
 export interface User {
   id: number;
   username: string;
   email: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   avatar?: string;
   tg_nickname?: string;
   rating?: number;
 }
 
+// Авторизован ли пользоваелть
 interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
 }
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
     user: null,
-    token: localStorage.getItem('token') || null,
-    isAuthenticated: !!localStorage.getItem('token'),
+    token: localStorage.getItem("token") || null,
+    isAuthenticated: !!localStorage.getItem("token"),
   }),
   getters: {
-    isAdmin: (state) => state.user?.role === 'admin',
-    username: (state) => state.user?.username || '',
+    // Возвращает яляеться ли польователь администаротом
+    isAdmin: (state) => state.user?.role === "admin",
+    username: (state) => state.user?.username || "",
   },
   actions: {
+		// Запрос логина
     async login(email: string, password: string) {
       const response = await post<{ user: User; token: string }>(
         API_URLS.auth.login,
-        { email, password }
+        { email, password },
       );
       this.user = response.user;
       this.token = response.token;
       this.isAuthenticated = true;
-      localStorage.setItem('token', response.token);
+      localStorage.setItem("token", response.token);
     },
-    async logout() {
-      try {
-        await post(API_URLS.auth.logout, {});
-      } catch (e) {
-        console.warn('Logout request failed', e);
-      }
-      this.user = null;
-      this.token = null;
-      this.isAuthenticated = false;
-      localStorage.removeItem('token');
-    },
+		// Получение конкретного пользователя
     async fetchCurrentUser() {
       if (!this.token) return;
       try {
         const user = await get<User>(API_URLS.auth.me);
         this.user = user;
       } catch (error) {
-        this.logout();
+        console.log("Ошибка получения пользоваетля", error);
       }
     },
   },
