@@ -1,4 +1,5 @@
 export const API_URLS = {
+  // URL Постов
   posts: {
     list: "/posts/",
 
@@ -10,6 +11,7 @@ export const API_URLS = {
 
     delete: (id: number) => `/posts/${id}/`,
   },
+  // URL Турниров
   tournaments: {
     list: "/tournaments/",
     getOne: (id: number) => `/tournaments/${id}/`,
@@ -22,16 +24,15 @@ export const API_URLS = {
 
     apply: (id: number) => `/tournaments/${id}/apply`,
   },
-	// ! Поменять когда будет полный список url
+  // URL Авторизации
+  // ! Поменять когда будет полный список url
   auth: {
     login: "/auth/login",
-
-    logout: "/auth/logout",
-
     me: "/auth/me",
 
     register: "/auth/register",
   },
+	// URL Пользователей
   users: {
     list: "/users",
     detail: (id: number) => `/users/${id}`,

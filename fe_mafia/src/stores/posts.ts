@@ -19,6 +19,7 @@ export const usePostsStore = defineStore("posts", {
     loading: false,
   }),
   actions: {
+		// Получение списка постов
     async fetchPosts() {
       this.loading = true;
       try {
@@ -28,6 +29,7 @@ export const usePostsStore = defineStore("posts", {
         this.loading = false;
       }
     },
+		// Получение конкретного поста
     async fetchPostById(id: number) {
       this.loading = true;
       try {
@@ -37,16 +39,19 @@ export const usePostsStore = defineStore("posts", {
         this.loading = false;
       }
     },
+		// Создание поста для администратора
     async createPost(data: Omit<Post, "id" | "created_at" | "published_at">) {
       const newPost = await post<Post>(API_URLS.posts.create, data);
       this.posts.unshift(newPost);
     },
+		// Обновления поста
     async updatePost(id: number, data: Partial<Post>) {
       const updated = await patch<Post>(API_URLS.posts.update(id), data);
       const index = this.posts.findIndex((p) => p.id === id);
       if (index !== -1) this.posts[index] = updated;
       if (this.currentPost?.id === id) this.currentPost = updated;
     },
+		// Удаление поста
     async deletePost(id: number) {
       await del(API_URLS.posts.delete(id));
       this.posts = this.posts.filter((p) => p.id !== id);

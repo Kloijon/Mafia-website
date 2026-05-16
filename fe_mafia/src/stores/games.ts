@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-
+// ! Сделать при получение полного списка URL
 export interface Game {
   id: number;
   name: string;

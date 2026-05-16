@@ -3,6 +3,7 @@ import { get } from "@/helper/api";
 import { API_URLS } from "@/helper/apiUrls";
 import type { User } from "./auth";
 
+//TODO Сделать геттеры для получение поьзщователй и сеттеры для изменения лоудинга на стороне компонента 
 export const useUsersStore = defineStore("users", {
   state: () => ({
     users: [] as User[],
@@ -10,6 +11,7 @@ export const useUsersStore = defineStore("users", {
     loading: false,
   }),
   actions: {
+		// Получение всех пользователей
     async fetchAllUsers() {
       this.loading = true;
       try {
@@ -19,6 +21,7 @@ export const useUsersStore = defineStore("users", {
         this.loading = false;
       }
     },
+		// Получение конкретного пользоваетля
     async fetchUserById(id: number) {
       this.loading = true;
       try {
