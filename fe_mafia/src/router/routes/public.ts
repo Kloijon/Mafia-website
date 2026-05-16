@@ -1,7 +1,7 @@
-import MainPage from "@/core/views/MainPage.vue";
-import AboutPage from "@/core/views/AboutPage.vue";
-import RatingPage from "@/core/views/RatingPage.vue";
-import TournamentsPage from "@/core/views/TournamentsPage.vue";
+import MainPage from "@/core/views/mainMafiaPages/MainPage.vue";
+import AboutPage from "@/core/views/mainMafiaPages/AboutPage.vue";
+import RatingPage from "@/core/views/gamesTournaments/RatingPage.vue";
+import TournamentsPage from "@/core/views/gamesTournaments/TournamentsPage.vue";
 //! Раскоментировать meta когда узнаем api
 export const publicRoutes = [
   {
