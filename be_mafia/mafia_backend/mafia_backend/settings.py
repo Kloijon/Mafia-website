@@ -182,7 +182,7 @@ LOGGING = {
     'file': {
       'level': 'INFO', # уровень логирования
       'class': 'logging.FileHandler', # логирование в файл
-      'filename': BASE_DIR / 'debug.log', # путь к файлу логов
+      'filename': BASE_DIR / '.debug.log', # путь к файлу логов
     },
   },
   'loggers': {
